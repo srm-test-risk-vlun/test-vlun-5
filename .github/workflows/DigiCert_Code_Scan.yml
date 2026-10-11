@@ -1,7 +1,24 @@
 name: DigiCert Code Scan
-on: workflow_dispatch
+
+on:
+  workflow_dispatch:
+
 jobs:
-  noop:
+  analyze:
+    name: DigiCert Code Monitoring
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This is just a placeholder"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: digicert/digicert-code-monitoring-action@5bff5d5c9c6c4e8552534ef56322901f06e3f4db
+        with:
+          host: "https://wasabi-culpable-unloaded.ngrok-free.dev"
+          api-key: ${{ secrets.STAGEAZ_API_KEY }}
+          name: Release v1.0.0-test-vlun-5-20261009-070343-r2
+          tag: v1.0.0-test-vlun-5-20261009-070343-r2
+          with-release: "true"
+          dc-release-id: ee93f63d-310e-4c95-a925-56b2d6a30157
+          digicert-cdn: "https://pki-downloads.digicert.com/stm/snapshot/stmclients"
+          use-github-caching-service: "true"
+          use-binary-sha256-checksum: "true"
